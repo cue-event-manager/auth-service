@@ -1,14 +1,13 @@
 package cue.edu.co.model.role;
-import lombok.Builder;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-//import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
-@Getter
-@Setter
-//@NoArgsConstructor
-@AllArgsConstructor
-@Builder(toBuilder = true)
+import java.time.LocalDate;
+
+@Data
+@Builder
 public class Role {
+    private Long id;
+    private String name;
+    private String description;
+    private LocalDate createdAt;
 }
