@@ -29,4 +29,11 @@ public class RoleRepositoryMySQLAdapter implements RoleRepository {
                 .findByName(name)
                 .map(roleEntityMapper::toDomain);
     }
+
+    @Override
+    public Optional<Role> findById(Long id) {
+        return roleJpaRepository
+                .findById(id)
+                .map(roleEntityMapper::toDomain);
+    }
 }
