@@ -8,6 +8,7 @@ buildscript {
         lombokVersion = '1.18.38'
         mysqlConnectorVersion = '8.0.33'
         mapstructVersion = '1.6.3'
+        cryptoVersion = '6.4.4'
     }
 }
 
