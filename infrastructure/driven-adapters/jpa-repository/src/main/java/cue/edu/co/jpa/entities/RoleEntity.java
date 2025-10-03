@@ -2,11 +2,17 @@ package cue.edu.co.jpa.entities;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
 import java.time.LocalDateTime;
+
+import static cue.edu.co.jpa.constants.TableConstant.ROLES_TABLE;
 
 @Data
 @Entity
-@Table(name = "roles")
+@Table(name = ROLES_TABLE)
+@EntityListeners(AuditingEntityListener.class)
 public class RoleEntity {
 
     @Id
@@ -19,11 +25,7 @@ public class RoleEntity {
     @Column(nullable = false)
     private String description;
 
-    @Column(nullable = false)
+    @Column(name = "created_at", nullable = false, updatable = false)
+    @CreatedDate
     private LocalDateTime createdAt;
-
-    @PrePersist
-    protected void onCreate() {
-        createdAt = LocalDateTime.now();
-    }
 }
