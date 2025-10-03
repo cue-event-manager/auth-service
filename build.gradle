@@ -8,7 +8,10 @@ buildscript {
         lombokVersion = '1.18.38'
         mysqlConnectorVersion = '8.0.33'
         mapstructVersion = '1.6.3'
-        cryptoVersion = '6.4.4'
+        cryptoVersion = '6.5.3'
+        flywayVersion = '11.3.2'
+        jjwtVersion = '0.12.6'
+        eurekaClientVersion = '4.3.0'
     }
 }
 
