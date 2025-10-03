@@ -1,5 +1,7 @@
 package cue.edu.co.model.role;
-import lombok.*;
+
+import lombok.Builder;
+import lombok.Data;
 
 import java.time.LocalDateTime;
 

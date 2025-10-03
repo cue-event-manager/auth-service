@@ -3,14 +3,19 @@ package cue.edu.co.jpa.entities;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.SoftDelete;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-@Entity
-@Table(name = "users")
-@SoftDelete
+import static cue.edu.co.jpa.constants.TableConstant.USERS_TABLE;
+
 @Data
+@Entity
+@SoftDelete
+@Table(name = USERS_TABLE)
+@EntityListeners(AuditingEntityListener.class)
 public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,7 +33,9 @@ public class UserEntity {
     @Column(nullable = false)
     private String password;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "role_id", nullable = false,
+            foreignKey = @ForeignKey(name = "fk_user_role"))
     private RoleEntity role;
 
     @Column(nullable = true, unique = true)
@@ -43,10 +50,8 @@ public class UserEntity {
     @Column(nullable = true)
     private String profilePicture;
 
+    @Column(name = "created_at", nullable = false, updatable = false)
+    @CreatedDate
     private LocalDateTime createdAt;
 
-    @PrePersist
-    protected void onCreate() {
-        createdAt = LocalDateTime.now();
-    }
 }

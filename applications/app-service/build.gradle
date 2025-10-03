@@ -1,6 +1,7 @@
 apply plugin: 'org.springframework.boot'
 
 dependencies {
+	implementation project(':jwt-token-provider')
 	implementation project(':password-encoder')
 	testImplementation 'org.springframework:spring-web'
 	implementation project(':api-rest')
@@ -9,6 +10,10 @@ dependencies {
 	implementation project(':jpa-repository')
     implementation project(':model')
     implementation project(':usecase')
+    implementation "org.flywaydb:flyway-core:${flywayVersion}"
+    implementation "org.flywaydb:flyway-mysql:${flywayVersion}"
+    implementation "org.springframework.cloud:spring-cloud-starter-netflix-eureka-client:${eurekaClientVersion}"
+
     implementation 'org.springframework.boot:spring-boot-starter'
     runtimeOnly('org.springframework.boot:spring-boot-devtools')
     testImplementation 'com.tngtech.archunit:archunit:1.4.1'

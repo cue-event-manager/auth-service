@@ -2,7 +2,6 @@ package cue.edu.co.api.config;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.mock.web.MockFilterChain;
