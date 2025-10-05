@@ -30,3 +30,5 @@ include ':password-encoder'
 project(':password-encoder').projectDir = file('./infrastructure/driven-adapters/password-encoder')
 include ':jwt-token-provider'
 project(':jwt-token-provider').projectDir = file('./infrastructure/driven-adapters/jwt-token-provider')
+include ':spring-security-context'
+project(':spring-security-context').projectDir = file('./infrastructure/driven-adapters/spring-security-context')

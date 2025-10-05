@@ -4,14 +4,18 @@ import cue.edu.co.api.auth.constants.AuthEndpoint;
 import cue.edu.co.api.auth.dtos.LoginRequestDto;
 import cue.edu.co.api.auth.dtos.LoginResponseDto;
 import cue.edu.co.api.auth.mappers.AuthDtoMapper;
+import cue.edu.co.api.user.dtos.UserResponseDto;
+import cue.edu.co.api.user.mappers.UserDtoMapper;
 import cue.edu.co.model.auth.commands.LoginCommand;
 import cue.edu.co.model.auth.results.LoginResult;
+import cue.edu.co.usecase.auth.GetCurrentUserUseCase;
 import cue.edu.co.usecase.auth.LoginUseCase;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,8 +26,10 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class AuthController {
     private final LoginUseCase loginUseCase;
+    private final GetCurrentUserUseCase getCurrentUserUseCase;
 
     private final AuthDtoMapper authDtoMapper;
+    private final UserDtoMapper userDtoMapper;
 
     @PostMapping(AuthEndpoint.LOGIN_ENDPOINT)
     public ResponseEntity<LoginResponseDto> login(
@@ -43,6 +49,13 @@ public class AuthController {
         LoginResult result = loginUseCase.execute(command);
 
         LoginResponseDto response = authDtoMapper.toDto(result);
+
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping(AuthEndpoint.ME_ENDPOINT)
+    public ResponseEntity<UserResponseDto> me(){
+        UserResponseDto response = userDtoMapper.toDto(getCurrentUserUseCase.execute());
 
         return ResponseEntity.ok(response);
     }
