@@ -1,11 +1,13 @@
 package cue.edu.co.config;
 
+import cue.edu.co.model.auth.gateways.AuthContext;
 import cue.edu.co.model.auth.gateways.TokenProvider;
 import cue.edu.co.model.refreshtoken.gateways.RefreshTokenRepository;
 import cue.edu.co.model.role.gateways.RoleRepository;
 import cue.edu.co.model.security.gateways.PasswordEncoder;
 import cue.edu.co.model.user.gateways.UserRepository;
 import cue.edu.co.model.userconsent.gateways.UserConsentRepository;
+import cue.edu.co.usecase.auth.GetCurrentUserUseCase;
 import cue.edu.co.usecase.auth.LoginUseCase;
 import cue.edu.co.usecase.refreshtoken.CreateRefreshTokenUseCase;
 import cue.edu.co.usecase.refreshtoken.RevokeRefreshTokenUseCase;
@@ -42,5 +44,11 @@ public class UseCasesConfig {
                                      TokenProvider tokenProvider,
                                      CreateRefreshTokenUseCase createRefreshTokenUseCase){
         return new LoginUseCase(userRepository,passwordEncoder,userConsentRepository,tokenProvider,createRefreshTokenUseCase);
+    }
+
+    public GetCurrentUserUseCase getCurrentUserUseCase(AuthContext authContext,
+                                                       UserRepository userRepository
+                                                       ){
+        return new GetCurrentUserUseCase(authContext,userRepository);
     }
 }

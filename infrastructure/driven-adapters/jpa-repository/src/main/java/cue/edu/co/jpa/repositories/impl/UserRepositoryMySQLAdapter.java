@@ -35,6 +35,11 @@ public class UserRepositoryMySQLAdapter implements UserRepository {
     }
 
     @Override
+    public Optional<User> findById(Long id) {
+        return userJpaRepository.findById(id).map(userEntityMapper::toDomain);
+    }
+
+    @Override
     public boolean existsByIdentification(String identification) {
         return userJpaRepository.existsByIdentification(identification);
     }
