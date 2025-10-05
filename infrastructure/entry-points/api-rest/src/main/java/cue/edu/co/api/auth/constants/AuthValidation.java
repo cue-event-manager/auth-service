@@ -6,4 +6,5 @@ public class AuthValidation {
     public static final String EMAIL_REQUIRED = "Email is required";
     public static final String EMAIL_INVALID = "Email format is invalid";
     public static final String PASSWORD_REQUIRED = "Password is required";
+    public static final String REFRESH_TOKEN_REQUIRED = "Refresh token is required";
 }

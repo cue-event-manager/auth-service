@@ -10,6 +10,8 @@ import java.util.Optional;
 public interface RefreshTokenJpaRepository extends CrudRepository<RefreshTokenEntity, Long> {
     Optional<RefreshTokenEntity> findByToken(String token);
 
+    Optional<RefreshTokenEntity> findByUserIdAndDeviceInfoAndRevoked(Long userId, String deviceInfo, boolean revoked);
+
     @Modifying
     @Query("update RefreshTokenEntity r set r.revoked = true where r.id = :id")
     void revokeById(Long id);
@@ -17,5 +19,4 @@ public interface RefreshTokenJpaRepository extends CrudRepository<RefreshTokenEn
     @Modifying
     @Query("update RefreshTokenEntity r set r.revoked = true where r.userId = :userId")
     void revokeAllByUserId(Long userId);
-
 }

@@ -9,6 +9,8 @@ public interface RefreshTokenRepository {
 
     Optional<RefreshToken> findByToken(String token);
 
+    Optional<RefreshToken> findByUserIdAndDeviceInfo(Long userId, String deviceInfo, Boolean revoked);
+
     void revokeById(Long id);
 
     void revokeAllByUserId(Long userId);

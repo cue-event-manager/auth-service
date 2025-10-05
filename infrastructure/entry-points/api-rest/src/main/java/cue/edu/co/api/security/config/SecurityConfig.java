@@ -28,6 +28,8 @@ public class SecurityConfig {
                 .addFilterBefore(internalGatewayFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(AuthEndpoint.LOGIN_ENDPOINT).permitAll()
+                        .requestMatchers(AuthEndpoint.REFRESH_TOKEN_ENDPOINT).permitAll()
+                        .requestMatchers("/errors/**").permitAll()
                         .anyRequest().authenticated()
                 );
 
