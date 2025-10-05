@@ -25,12 +25,20 @@ public class RefreshTokenRepositoryMySQLAdapter implements RefreshTokenRepositor
     }
 
     @Override
+    public Optional<RefreshToken> findByUserIdAndDeviceInfo(Long userId, String deviceInfo, Boolean revoked) {
+        return refreshTokenJpaRepository
+                .findByUserIdAndDeviceInfoAndRevoked(userId,deviceInfo,revoked)
+                .map(refreshTokenEntityMapper::toDomain);
+    }
+
+    @Override
     public Optional<RefreshToken> findByToken(String token) {
         return refreshTokenJpaRepository
                 .findByToken(token)
                 .map(refreshTokenEntityMapper::toDomain);
     }
 
+    @Transactional
     @Override
     public void revokeById(Long id) {
         refreshTokenJpaRepository.revokeById(id);
