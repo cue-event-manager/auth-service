@@ -2,7 +2,6 @@ package cue.edu.co.config;
 
 import cue.edu.co.model.auth.gateways.AuthContext;
 import cue.edu.co.model.auth.gateways.TokenProvider;
-import cue.edu.co.model.refreshtoken.RefreshToken;
 import cue.edu.co.model.refreshtoken.gateways.RefreshTokenRepository;
 import cue.edu.co.model.role.gateways.RoleRepository;
 import cue.edu.co.model.security.gateways.PasswordEncoder;
@@ -10,9 +9,9 @@ import cue.edu.co.model.user.gateways.UserRepository;
 import cue.edu.co.model.userconsent.gateways.UserConsentRepository;
 import cue.edu.co.usecase.auth.GetCurrentUserUseCase;
 import cue.edu.co.usecase.auth.LoginUseCase;
+import cue.edu.co.usecase.auth.LogoutUseCase;
 import cue.edu.co.usecase.auth.RefreshTokenUseCase;
 import cue.edu.co.usecase.refreshtoken.CreateRefreshTokenUseCase;
-import cue.edu.co.usecase.refreshtoken.RevokeRefreshTokenUseCase;
 import cue.edu.co.usecase.user.CreateUserUseCase;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -39,11 +38,6 @@ public class UseCasesConfig {
     }
 
     @Bean
-    public RevokeRefreshTokenUseCase revokeRefreshTokenUseCase(RefreshTokenRepository refreshTokenRepository){
-        return new RevokeRefreshTokenUseCase(refreshTokenRepository);
-    }
-
-    @Bean
     public LoginUseCase loginUseCase(UserRepository userRepository,
                                      PasswordEncoder passwordEncoder,
                                      UserConsentRepository userConsentRepository,
@@ -52,6 +46,10 @@ public class UseCasesConfig {
         return new LoginUseCase(userRepository,passwordEncoder,userConsentRepository,tokenProvider,createRefreshTokenUseCase);
     }
 
+    @Bean
+    public LogoutUseCase logoutUseCase(RefreshTokenRepository refreshTokenRepository){
+        return new LogoutUseCase(refreshTokenRepository);
+    }
     @Bean
     public GetCurrentUserUseCase getCurrentUserUseCase(AuthContext authContext,
                                                        UserRepository userRepository

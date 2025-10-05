@@ -27,9 +27,11 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(internalGatewayFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(AuthEndpoint.LOGIN_ENDPOINT).permitAll()
-                        .requestMatchers(AuthEndpoint.REFRESH_TOKEN_ENDPOINT).permitAll()
-                        .requestMatchers("/errors/**").permitAll()
+                        .requestMatchers(
+                                AuthEndpoint.LOGIN_ENDPOINT,
+                                AuthEndpoint.REFRESH_TOKEN_ENDPOINT,
+                                AuthEndpoint.LOGOUT_ENDPOINT
+                                ).permitAll()
                         .anyRequest().authenticated()
                 );
 

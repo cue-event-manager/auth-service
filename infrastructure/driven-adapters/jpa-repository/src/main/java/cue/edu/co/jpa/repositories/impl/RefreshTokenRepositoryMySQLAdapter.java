@@ -38,6 +38,7 @@ public class RefreshTokenRepositoryMySQLAdapter implements RefreshTokenRepositor
                 .map(refreshTokenEntityMapper::toDomain);
     }
 
+    @Transactional
     @Override
     public void revokeById(Long id) {
         refreshTokenJpaRepository.revokeById(id);

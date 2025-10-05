@@ -1,10 +1,7 @@
 package cue.edu.co.api.auth;
 
 import cue.edu.co.api.auth.constants.AuthEndpoint;
-import cue.edu.co.api.auth.dtos.LoginRequestDto;
-import cue.edu.co.api.auth.dtos.LoginResponseDto;
-import cue.edu.co.api.auth.dtos.RefreshTokenRequestDto;
-import cue.edu.co.api.auth.dtos.RefreshTokenResponseDto;
+import cue.edu.co.api.auth.dtos.*;
 import cue.edu.co.api.auth.mappers.AuthDtoMapper;
 import cue.edu.co.api.user.dtos.UserResponseDto;
 import cue.edu.co.api.user.mappers.UserDtoMapper;
@@ -12,11 +9,13 @@ import cue.edu.co.model.auth.commands.LoginCommand;
 import cue.edu.co.model.auth.results.LoginResult;
 import cue.edu.co.usecase.auth.GetCurrentUserUseCase;
 import cue.edu.co.usecase.auth.LoginUseCase;
+import cue.edu.co.usecase.auth.LogoutUseCase;
 import cue.edu.co.usecase.auth.RefreshTokenUseCase;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,6 +30,7 @@ public class AuthController {
     private final LoginUseCase loginUseCase;
     private final GetCurrentUserUseCase getCurrentUserUseCase;
     private final RefreshTokenUseCase refreshTokenUseCase;
+    private final LogoutUseCase logoutUseCase;
 
     private final AuthDtoMapper authDtoMapper;
     private final UserDtoMapper userDtoMapper;
@@ -64,6 +64,15 @@ public class AuthController {
         String newAccessToken = refreshTokenUseCase.execute(refreshTokenResponseDto.refreshToken());
 
         return ResponseEntity.ok(new RefreshTokenResponseDto(newAccessToken));
+    }
+
+    @PostMapping(AuthEndpoint.LOGOUT_ENDPOINT)
+    public ResponseEntity<Void> logout(
+            @Valid @RequestBody LogoutRequestDto logoutRequestDto
+    ){
+        logoutUseCase.execute(logoutRequestDto.refreshToken());
+
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @GetMapping(AuthEndpoint.ME_ENDPOINT)
