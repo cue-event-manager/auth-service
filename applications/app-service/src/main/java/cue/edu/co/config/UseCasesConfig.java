@@ -7,10 +7,7 @@ import cue.edu.co.model.role.gateways.RoleRepository;
 import cue.edu.co.model.security.gateways.PasswordEncoder;
 import cue.edu.co.model.user.gateways.UserRepository;
 import cue.edu.co.model.userconsent.gateways.UserConsentRepository;
-import cue.edu.co.usecase.auth.GetCurrentUserUseCase;
-import cue.edu.co.usecase.auth.LoginUseCase;
-import cue.edu.co.usecase.auth.LogoutUseCase;
-import cue.edu.co.usecase.auth.RefreshTokenUseCase;
+import cue.edu.co.usecase.auth.*;
 import cue.edu.co.usecase.refreshtoken.CreateRefreshTokenUseCase;
 import cue.edu.co.usecase.user.CreateUserUseCase;
 import org.springframework.context.annotation.Bean;
@@ -62,5 +59,14 @@ public class UseCasesConfig {
                                                    UserRepository userRepository,
                                                    TokenProvider tokenProvider){
         return new RefreshTokenUseCase(refreshTokenRepository,userRepository,tokenProvider);
+    }
+
+    @Bean
+    public UpdateUserProfileUseCase updateUserProfileUseCase(GetCurrentUserUseCase getCurrentUserUseCase,
+                                                             UserRepository userRepository,
+                                                             PasswordEncoder passwordEncoder,
+                                                             RefreshTokenRepository refreshTokenRepository
+    ){
+        return new UpdateUserProfileUseCase(getCurrentUserUseCase, userRepository, passwordEncoder, refreshTokenRepository);
     }
 }

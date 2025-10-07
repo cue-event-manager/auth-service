@@ -6,21 +6,17 @@ import cue.edu.co.api.auth.mappers.AuthDtoMapper;
 import cue.edu.co.api.user.dtos.UserResponseDto;
 import cue.edu.co.api.user.mappers.UserDtoMapper;
 import cue.edu.co.model.auth.commands.LoginCommand;
+import cue.edu.co.model.auth.commands.UpdateProfileCommand;
 import cue.edu.co.model.auth.results.LoginResult;
-import cue.edu.co.usecase.auth.GetCurrentUserUseCase;
-import cue.edu.co.usecase.auth.LoginUseCase;
-import cue.edu.co.usecase.auth.LogoutUseCase;
-import cue.edu.co.usecase.auth.RefreshTokenUseCase;
+import cue.edu.co.model.user.User;
+import cue.edu.co.usecase.auth.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
@@ -31,6 +27,7 @@ public class AuthController {
     private final GetCurrentUserUseCase getCurrentUserUseCase;
     private final RefreshTokenUseCase refreshTokenUseCase;
     private final LogoutUseCase logoutUseCase;
+    private final UpdateUserProfileUseCase updateUserProfileUseCase;
 
     private final AuthDtoMapper authDtoMapper;
     private final UserDtoMapper userDtoMapper;
@@ -80,5 +77,14 @@ public class AuthController {
         UserResponseDto response = userDtoMapper.toDto(getCurrentUserUseCase.execute());
 
         return ResponseEntity.ok(response);
+    }
+
+    @PutMapping(AuthEndpoint.UPDATE_PROFILE_ENDPOINT)
+    public ResponseEntity<UserResponseDto> updateProfile(
+            @Valid @RequestBody UpdateProfileRequestDto updateProfileRequestDto
+    ){
+        User updatedUser = updateUserProfileUseCase.execute(authDtoMapper.toDomain(updateProfileRequestDto));
+
+        return ResponseEntity.ok(userDtoMapper.toDto(updatedUser));
     }
 }
