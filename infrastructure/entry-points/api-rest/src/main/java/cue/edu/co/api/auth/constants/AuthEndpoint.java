@@ -7,4 +7,6 @@ public class AuthEndpoint {
     public static final String ME_ENDPOINT =  AUTH_BASE + "/me";
     public static final String REFRESH_TOKEN_ENDPOINT = AUTH_BASE + "/refresh";
     public static final String LOGOUT_ENDPOINT = AUTH_BASE + "/logout";
+    public static final String UPDATE_PROFILE_ENDPOINT = AUTH_BASE + "/update-profile";
+
 }
