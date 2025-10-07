@@ -47,9 +47,15 @@ cors:
 app:
   jwt:
     secret: ${JWT_SECRET}
-    expiration: 3600000
+    expiration: 60000
   internal:
     secret: ${INTERNAL_SECRET:123}
+  seeder:
+    admin:
+      email: ${ADMIN_EMAIL:admin@cue.edu.co}
+      password: ${ADMIN_PASSWORD:Admin123!}
+      first-name: ${ADMIN_FIRST_NAME:Administrador}
+      last-name: ${ADMIN_LAST_NAME:Sistema}
 
 eureka:
   client:
