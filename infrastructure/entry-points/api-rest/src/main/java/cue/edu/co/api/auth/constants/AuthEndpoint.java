@@ -8,5 +8,7 @@ public class AuthEndpoint {
     public static final String REFRESH_TOKEN_ENDPOINT = AUTH_BASE + "/refresh";
     public static final String LOGOUT_ENDPOINT = AUTH_BASE + "/logout";
     public static final String UPDATE_PROFILE_ENDPOINT = AUTH_BASE + "/update-profile";
+    public static final String RECOVER_PASSWORD_ENDPOINT = AUTH_BASE + "/recover-password";
+    public static final String RESET_PASSWORD_ENDPOINT = AUTH_BASE + "/reset-password";
 
 }

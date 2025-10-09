@@ -30,7 +30,9 @@ public class SecurityConfig {
                         .requestMatchers(
                                 AuthEndpoint.LOGIN_ENDPOINT,
                                 AuthEndpoint.REFRESH_TOKEN_ENDPOINT,
-                                AuthEndpoint.LOGOUT_ENDPOINT
+                                AuthEndpoint.LOGOUT_ENDPOINT,
+                                AuthEndpoint.RECOVER_PASSWORD_ENDPOINT,
+                                AuthEndpoint.RESET_PASSWORD_ENDPOINT
                                 ).permitAll()
                         .anyRequest().authenticated()
                 );
