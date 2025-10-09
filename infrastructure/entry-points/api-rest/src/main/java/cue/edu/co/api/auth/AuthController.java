@@ -3,6 +3,7 @@ package cue.edu.co.api.auth;
 import cue.edu.co.api.auth.constants.AuthEndpoint;
 import cue.edu.co.api.auth.dtos.*;
 import cue.edu.co.api.auth.mappers.AuthDtoMapper;
+import cue.edu.co.api.common.dtos.MessageResponseDto;
 import cue.edu.co.api.user.dtos.UserResponseDto;
 import cue.edu.co.api.user.mappers.UserDtoMapper;
 import cue.edu.co.model.auth.commands.LoginCommand;
@@ -10,6 +11,8 @@ import cue.edu.co.model.auth.commands.UpdateProfileCommand;
 import cue.edu.co.model.auth.results.LoginResult;
 import cue.edu.co.model.user.User;
 import cue.edu.co.usecase.auth.*;
+import cue.edu.co.usecase.passwordrecovery.RecoverPasswordUseCase;
+import cue.edu.co.usecase.passwordrecovery.ResetPasswordUseCase;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +23,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
+import static cue.edu.co.model.passwordrecovery.constants.PasswordRecoveryConstant.PASSWORD_RECOVER_MESSAGE;
+import static cue.edu.co.model.passwordrecovery.constants.PasswordRecoveryConstant.PASSWORD_RESET_MESSAGE;
+
 @RestController
 @RequiredArgsConstructor
 public class AuthController {
@@ -28,6 +34,8 @@ public class AuthController {
     private final RefreshTokenUseCase refreshTokenUseCase;
     private final LogoutUseCase logoutUseCase;
     private final UpdateUserProfileUseCase updateUserProfileUseCase;
+    private final RecoverPasswordUseCase recoverPasswordUseCase;
+    private final ResetPasswordUseCase resetPasswordUseCase;
 
     private final AuthDtoMapper authDtoMapper;
     private final UserDtoMapper userDtoMapper;
@@ -86,5 +94,23 @@ public class AuthController {
         User updatedUser = updateUserProfileUseCase.execute(authDtoMapper.toDomain(updateProfileRequestDto));
 
         return ResponseEntity.ok(userDtoMapper.toDto(updatedUser));
+    }
+
+    @PostMapping(AuthEndpoint.RECOVER_PASSWORD_ENDPOINT)
+    public ResponseEntity<MessageResponseDto> recoverPassword(
+            @Valid @RequestBody RecoverPasswordRequestDto recoverPasswordRequestDto
+    ){
+        recoverPasswordUseCase.execute(authDtoMapper.toDomain(recoverPasswordRequestDto));
+
+        return ResponseEntity.ok(new MessageResponseDto(PASSWORD_RECOVER_MESSAGE));
+    }
+
+    @PostMapping(AuthEndpoint.RESET_PASSWORD_ENDPOINT)
+    public ResponseEntity<MessageResponseDto> resetPassword(
+            @Valid @RequestBody ResetPasswordRequestDto resetPasswordRequestDto
+    ){
+        resetPasswordUseCase.execute(authDtoMapper.toDomain(resetPasswordRequestDto));
+
+        return ResponseEntity.ok(new MessageResponseDto(PASSWORD_RESET_MESSAGE));
     }
 }
