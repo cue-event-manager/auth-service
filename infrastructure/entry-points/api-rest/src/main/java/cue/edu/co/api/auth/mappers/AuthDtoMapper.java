@@ -4,7 +4,7 @@ import cue.edu.co.api.auth.dtos.LoginResponseDto;
 import cue.edu.co.api.auth.dtos.RecoverPasswordRequestDto;
 import cue.edu.co.api.auth.dtos.ResetPasswordRequestDto;
 import cue.edu.co.api.auth.dtos.UpdateProfileRequestDto;
-import cue.edu.co.api.utils.OptionalMapper;
+import cue.edu.co.api.common.mappers.OptionalMapper;
 import cue.edu.co.model.auth.commands.UpdateProfileCommand;
 import cue.edu.co.model.auth.results.LoginResult;
 import cue.edu.co.model.passwordrecovery.commands.RecoverPasswordCommand;
