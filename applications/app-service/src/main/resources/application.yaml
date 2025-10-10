@@ -66,5 +66,5 @@ eureka:
 
 aws:
   sns:
-    region: us-east-1
+    region: ${AWS_REGION:us-east-1}
     topic-arn: ${SNS_AUTH_TOPIC}
