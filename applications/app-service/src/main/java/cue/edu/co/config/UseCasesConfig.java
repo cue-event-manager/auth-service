@@ -15,6 +15,7 @@ import cue.edu.co.usecase.passwordrecovery.ResetPasswordUseCase;
 import cue.edu.co.usecase.refreshtoken.CreateRefreshTokenUseCase;
 import cue.edu.co.usecase.user.CreateUserUseCase;
 import cue.edu.co.usecase.user.GetUserUseCase;
+import cue.edu.co.usecase.user.UpdateUserUseCase;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -94,6 +95,12 @@ public class UseCasesConfig {
     @Bean
     public GetUserUseCase getUserUseCase(UserRepository userRepository){
         return new GetUserUseCase(userRepository);
+    }
+
+    @Bean
+    public UpdateUserUseCase updateUserUseCase(UserRepository userRepository,
+                                               RoleRepository roleRepository){
+        return new UpdateUserUseCase(userRepository,roleRepository);
     }
 }
 
