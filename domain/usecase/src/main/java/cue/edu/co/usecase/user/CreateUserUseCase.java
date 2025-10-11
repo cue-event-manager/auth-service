@@ -5,7 +5,7 @@ import cue.edu.co.model.role.exceptions.RoleNotFoundException;
 import cue.edu.co.model.role.gateways.RoleRepository;
 import cue.edu.co.model.security.gateways.PasswordEncoder;
 import cue.edu.co.model.user.User;
-import cue.edu.co.model.user.comnands.CreateUserCommand;
+import cue.edu.co.model.user.commands.CreateUserCommand;
 import cue.edu.co.model.user.exceptions.EmailAlreadyInUseException;
 import cue.edu.co.model.user.exceptions.IdentificationAlreadyInUseException;
 import cue.edu.co.model.user.exceptions.PhoneAlreadyInUseException;

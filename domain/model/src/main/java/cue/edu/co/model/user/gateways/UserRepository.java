@@ -10,6 +10,8 @@ import java.util.Optional;
 public interface UserRepository {
     User save(User user);
     Optional<User> findByEmail(String email);
+    Optional<User> findByIdentification(String identification);
+    Optional<User> findByPhoneNumber(String phoneNumber);
     Optional<User> findById(Long id);
     PageResult<User> findAllByFilters(UserPaginationQuery userPaginationQuery);
     boolean existsByIdentification(String identification);

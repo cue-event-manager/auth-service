@@ -1,4 +1,4 @@
-package cue.edu.co.model.user.comnands;
+package cue.edu.co.model.user.commands;
 
 import cue.edu.co.model.role.Role;
 import cue.edu.co.model.user.User;
