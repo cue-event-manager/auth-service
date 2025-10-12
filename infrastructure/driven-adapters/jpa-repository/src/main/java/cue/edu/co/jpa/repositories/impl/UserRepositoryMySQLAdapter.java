@@ -72,6 +72,16 @@ public class UserRepositoryMySQLAdapter implements UserRepository {
     }
 
     @Override
+    public void deleteById(Long id) {
+        userJpaRepository.deleteById(id);
+    }
+
+    @Override
+    public boolean existsById(Long id) {
+        return userJpaRepository.existsById(id);
+    }
+
+    @Override
     public boolean existsByIdentification(String identification) {
         return userJpaRepository.existsByIdentification(identification);
     }

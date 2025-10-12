@@ -11,9 +11,11 @@ import cue.edu.co.api.user.mappers.UserDtoMapper;
 import cue.edu.co.model.common.results.PageResult;
 import cue.edu.co.model.user.User;
 import cue.edu.co.model.user.commands.CreateUserCommand;
+import cue.edu.co.model.user.commands.DeleteUserCommand;
 import cue.edu.co.model.user.commands.UpdateUserCommand;
 import cue.edu.co.model.user.queries.UserPaginationQuery;
 import cue.edu.co.usecase.user.CreateUserUseCase;
+import cue.edu.co.usecase.user.DeleteUserUseCase;
 import cue.edu.co.usecase.user.GetUserUseCase;
 import cue.edu.co.usecase.user.UpdateUserUseCase;
 import jakarta.validation.Valid;
@@ -28,6 +30,7 @@ public class UserController {
     private final CreateUserUseCase createUserUseCase;
     private final GetUserUseCase getUserUseCase;
     private final UpdateUserUseCase updateUserUseCase;
+    private final DeleteUserUseCase deleteUserUseCase;
 
     private final UserDtoMapper userDtoMapper;
 
@@ -71,5 +74,16 @@ public class UserController {
         User userUpdated = updateUserUseCase.execute(updateUserCommand);
 
         return ResponseEntity.ok(userDtoMapper.toDto(userUpdated));
+    }
+
+    @DeleteMapping(UserEndpoint.DELETE_USER_ENDPOINT)
+    public ResponseEntity<Void> deleteUser(
+            @PathVariable("id") Long id
+    ){
+        DeleteUserCommand deleteUserCommand = new DeleteUserCommand(id);
+
+        deleteUserUseCase.execute(deleteUserCommand);
+
+        return ResponseEntity.noContent().build();
     }
 }
