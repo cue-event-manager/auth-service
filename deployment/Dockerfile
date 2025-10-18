@@ -1,22 +1,7 @@
-FROM eclipse-temurin:17-jdk-alpine AS builder
-WORKDIR /workspace
-
-COPY . .
-
-RUN chmod +x ./gradlew || true
-
-RUN ./gradlew clean build -x test --no-daemon -PskipValidation=true
-
-
 FROM eclipse-temurin:17-jdk-alpine
-WORKDIR /app
-
-COPY --from=builder /workspace/applications/app-service/build/libs/*.jar app.jar
-
-ENV JAVA_OPTS="-XX:+UseContainerSupport -XX:MaxRAMPercentage=70 -Djava.security.egd=file:/dev/./urandom"
-
-RUN addgroup -S appgroup && adduser -S appuser -G appgroup
+VOLUME /tmp
+COPY *.jar auth-service.jar
+ENV JAVA_OPTS=" -Xshareclasses:name=cacheapp,cacheDir=/cache,nonfatal -XX:+UseContainerSupport -XX:MaxRAMPercentage=70 -Djava.security.egd=file:/dev/./urandom"
+# Replace with a non-root user to avoid running the container with excessive privileges
 USER appuser
-
-EXPOSE 8080
-ENTRYPOINT ["sh", "-c", "java $JAVA_OPTS -jar app.jar"]
+ENTRYPOINT [ "sh", "-c", "java $JAVA_OPTS  -jar auth-service.jar" ]
