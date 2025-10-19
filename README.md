@@ -1,47 +1,111 @@
-# Proyecto Base Implementando Clean Architecture
+# Auth Service
 
-## Antes de Iniciar
+## Overview
 
-Empezaremos por explicar los diferentes componentes del proyectos y partiremos de los componentes externos, continuando con los componentes core de negocio (dominio) y por último el inicio y configuración de la aplicación.
+The **Auth Service** is responsible for managing authentication and user authorization across the CUE Event Management System. It provides secure mechanisms for registration, login, token management (JWT + Refresh), and role-based access control. It serves as the main identity provider for the platform.
 
-Lee el artículo [Clean Architecture — Aislando los detalles](https://medium.com/bancolombia-tech/clean-architecture-aislando-los-detalles-4f9530f35d7a)
+---
 
-# Arquitectura
+## Purpose
 
-![Clean Architecture](https://miro.medium.com/max/1400/1*ZdlHz8B0-qu9Y-QO3AXR_w.png)
+This service centralizes identity management and authentication logic to ensure consistent and secure access across all microservices. It handles:
 
-## Domain
+* User registration and login.
+* Access and refresh token generation.
+* Token validation and rotation.
+* Role-based authorization.
+* Device and session tracking.
 
-Es el módulo más interno de la arquitectura, pertenece a la capa del dominio y encapsula la lógica y reglas del negocio mediante modelos y entidades del dominio.
+---
 
-## Usecases
+## Versions
 
-Este módulo gradle perteneciente a la capa del dominio, implementa los casos de uso del sistema, define lógica de aplicación y reacciona a las invocaciones desde el módulo de entry points, orquestando los flujos hacia el módulo de entities.
+| Component                                   | Version |
+| ------------------------------------------- | ------- |
+| **Java**                                    | 21      |
+| **Spring Boot**                             | 3.5.4   |
+| **Gradle**                                  | 8.14.3  |
+| **Bancolombia Clean Architecture Scaffold** | 3.26.1  |
 
-## Infrastructure
+---
 
-### Helpers
+## Architecture
 
-En el apartado de helpers tendremos utilidades generales para los Driven Adapters y Entry Points.
+The Auth Service follows the **Bancolombia Clean Architecture Scaffold**, ensuring a modular, testable, and maintainable design.
 
-Estas utilidades no están arraigadas a objetos concretos, se realiza el uso de generics para modelar comportamientos
-genéricos de los diferentes objetos de persistencia que puedan existir, este tipo de implementaciones se realizan
-basadas en el patrón de diseño [Unit of Work y Repository](https://medium.com/@krzychukosobudzki/repository-design-pattern-bc490b256006)
+```
+auth-service/
+├── applications/             # Application entry points and configurations
+├── domain/                   # Core entities, value objects, and use cases
+├── infrastructure/            # Repositories, adapters, and external integrations
+├── build.gradle               # Gradle configuration
+└── settings.gradle            # Project settings
+```
 
-Estas clases no puede existir solas y debe heredarse su compartimiento en los **Driven Adapters**
+### Layers
 
-### Driven Adapters
+* **Domain:** Core business logic and models.
+* **Use Cases:** Operations like login, registration, and token refresh.
+* **Infrastructure:** Database, messaging, and AWS integrations.
+* **Entry Points:** REST controllers exposing public endpoints.
 
-Los driven adapter representan implementaciones externas a nuestro sistema, como lo son conexiones a servicios rest,
-soap, bases de datos, lectura de archivos planos, y en concreto cualquier origen y fuente de datos con la que debamos
-interactuar.
+---
 
-### Entry Points
+## Environment Variables
 
-Los entry points representan los puntos de entrada de la aplicación o el inicio de los flujos de negocio.
+The following environment variables are used by the **Auth Service**. All values should be configured via the `.env` file or your container environment.
 
-## Application
+```bash
+# -----------------------------------
+# Server Configuration
+# -----------------------------------
+SERVER_PORT=8080
+SPRING_PROFILES_ACTIVE=dev
 
-Este módulo es el más externo de la arquitectura, es el encargado de ensamblar los distintos módulos, resolver las dependencias y crear los beans de los casos de use (UseCases) de forma automática, inyectando en éstos instancias concretas de las dependencias declaradas. Además inicia la aplicación (es el único módulo del proyecto donde encontraremos la función “public static void main(String[] args)”.
+# -----------------------------------
+# Database Configuration
+# -----------------------------------
+DB_URL=jdbc:mysql://mysql-auth:3306/auth_service?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC
+DB_USERNAME=auth_user
+DB_PASSWORD=auth_password
 
-**Los beans de los casos de uso se disponibilizan automaticamente gracias a un '@ComponentScan' ubicado en esta capa.**
+# -----------------------------------
+# JWT Configuration
+# -----------------------------------
+JWT_SECRET=your-jwt-secret-key
+JWT_EXPIRATION_ACCESS=900000          # 15 minutes
+JWT_EXPIRATION_REFRESH=604800000      # 7 days
+INTERNAL_SECRET=your-internal-service-secret
+
+# -----------------------------------
+# Default Admin User (Bootstrap)
+# -----------------------------------
+ADMIN_EMAIL=admin@cue.edu.co
+ADMIN_PASSWORD=admin123
+ADMIN_FIRST_NAME=Admin
+ADMIN_LAST_NAME=User
+
+# -----------------------------------
+# AWS Configuration
+# -----------------------------------
+AWS_REGION=us-east-1
+AWS_ACCESS_KEY_ID=your-aws-access-key
+AWS_SECRET_ACCESS_KEY=your-aws-secret-key
+SNS_AUTH_TOPIC=arn:aws:sns:us-east-1:123456789012:auth-topic
+
+# -----------------------------------
+# Service Discovery
+# -----------------------------------
+EUREKA_URL=http://discovery-service:8761/eureka/
+
+# -----------------------------------
+# Logging Configuration
+# -----------------------------------
+LOGGING_LEVEL_ROOT=INFO
+LOGGING_LEVEL_CO.EDU.CUE=DEBUG
+
+# -----------------------------------
+# CORS Configuration
+# -----------------------------------
+CORS_ALLOWED_ORIGINS=http://localhost:4200,http://localhost:3000
+```
