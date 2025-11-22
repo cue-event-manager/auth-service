@@ -32,8 +32,9 @@ public class UseCasesConfig {
     @Bean
     public CreateUserUseCase createUserUseCase(UserRepository userRepository,
                                                RoleRepository roleRepository,
-                                               PasswordEncoder passwordEncoder){
-        return new CreateUserUseCase(userRepository,roleRepository, passwordEncoder);
+                                               PasswordEncoder passwordEncoder,
+                                               EventPublisher eventPublisher){
+        return new CreateUserUseCase(userRepository,roleRepository, passwordEncoder, eventPublisher);
     }
 
     @Bean
