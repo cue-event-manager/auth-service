@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public enum EventType {
+    USER_CREATED("UserCreated"),
     RECOVER_PASSWORD("RecoverPasswordEvent"),
     PASSWORD_RESET("PasswordResetEvent");
 
