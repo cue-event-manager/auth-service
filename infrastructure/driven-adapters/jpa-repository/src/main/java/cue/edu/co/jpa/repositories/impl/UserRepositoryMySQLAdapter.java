@@ -15,7 +15,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.StreamSupport;
 
 
 @Repository
@@ -69,6 +71,13 @@ public class UserRepositoryMySQLAdapter implements UserRepository {
         Page<UserEntity> page = userJpaRepository.findAll(specification, pageable);
 
         return paginationMapper.toPageResult(page, userEntityMapper::toDomain);
+    }
+
+    @Override
+    public List<User> findAllByIds(List<Long> ids) {
+        return StreamSupport.stream(userJpaRepository.findAllById(ids).spliterator(), false)
+                .map(userEntityMapper::toDomain)
+                .toList();
     }
 
     @Override
