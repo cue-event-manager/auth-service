@@ -3,10 +3,7 @@ package cue.edu.co.api.user;
 import cue.edu.co.api.common.dtos.PaginationRequestDto;
 import cue.edu.co.api.common.dtos.PaginationResponseDto;
 import cue.edu.co.api.user.constants.UserEndpoint;
-import cue.edu.co.api.user.dtos.CreateUserRequestDto;
-import cue.edu.co.api.user.dtos.UpdateUserRequestDto;
-import cue.edu.co.api.user.dtos.UserPaginationRequestDto;
-import cue.edu.co.api.user.dtos.UserResponseDto;
+import cue.edu.co.api.user.dtos.*;
 import cue.edu.co.api.user.mappers.UserDtoMapper;
 import cue.edu.co.model.common.results.PageResult;
 import cue.edu.co.model.user.User;
@@ -22,6 +19,8 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -60,6 +59,15 @@ public class UserController {
         PaginationResponseDto<UserResponseDto> response = userDtoMapper.toDto(pageResult);
 
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping(UserEndpoint.GET_BY_IDS_ENDPOINT)
+    public ResponseEntity<List<UserResponseDto>> getUsersByIds(
+            @Valid GetUsersByIdsRequestDto requestDto
+    ) {
+        List<User> users = getUserUseCase.execute(requestDto.ids());
+        List<UserResponseDto> userResponseDtos = users.stream().map(userDtoMapper::toDto).toList();
+        return ResponseEntity.ok(userResponseDtos);
     }
 
     @PutMapping(UserEndpoint.UPDATE_USER_ENDPOINT)

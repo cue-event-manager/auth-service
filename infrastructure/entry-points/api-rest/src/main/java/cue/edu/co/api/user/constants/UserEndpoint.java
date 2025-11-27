@@ -6,4 +6,5 @@ public class UserEndpoint {
     public static final String CREATE_USER_ENDPOINT = USER_BASE + "/create";
     public static final String UPDATE_USER_ENDPOINT = USER_BASE + "/{id}/update";
     public static final String DELETE_USER_ENDPOINT = USER_BASE + "/{id}/delete";
+    public static final String GET_BY_IDS_ENDPOINT = USER_BASE + "/batch";
 }
